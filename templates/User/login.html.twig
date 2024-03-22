@@ -1,8 +1,18 @@
+<head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Login{% endblock %}</title>
+</head>
 {% block body %}
+<body>
+{% include 'navbar.html.twig' %}
 <h1>Login</h1>
 <form action="{{ path('login') }}" method="post">
     <input type="text" name="username" placeholder="Username">
     <input type="text" name="password" placeholder="Password">
     <button type="submit">Sign in</button>
 </form>
+{% if error is defined and error == true %}
+    <p> Wrong Credentials </p>
+{% endif %}
 {% endblock %}
+</body>

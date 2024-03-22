@@ -1,14 +1,13 @@
+ <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Register{% endblock %}</title>
+    </head>
 {% block body %}
+{% include 'navbar.html.twig' with { active: 'signin' } %}
 <h1>Register</h1>
 <form action="{{ path('signup') }}" method="post">
     <input type="text" name="username" placeholder="Username">
     <input type="text" name="password" placeholder="Password">
     <button type="submit">Sign up</button>
 </form>
-{% if data is defined %}
-    {% for user in data %}
-        <h1>{{ user.username }}</h1>
-    {% endfor %}
-{% endif %}
-<h1>{{ data.username ?? " " }}</h1>
 {% endblock %}

@@ -1,0 +1,21 @@
+<head>
+        <meta charset="UTF-8">
+        <title>Create Article</title>
+</head>
+{% block body %}
+<body>
+{% include 'navbar.html.twig' %}
+<div class="create-article-title">
+<h1>Create a post {{username}}</h1>
+</div>
+
+<form class="create-article-form" action="{{ path('create_article') }}" method="POST">
+    <textarea type="text" name="title" placeholder="Title" rows="4" cols="50"></textarea>
+    <textarea name="body" placeholder="Article" rows="4" cols="50"></textarea>
+    <button type="submit">Create</button>
+</form>
+{% if error is defined and error == true %}
+    <p> Missing field </p>
+{% endif %}
+{% endblock %}
+</body>

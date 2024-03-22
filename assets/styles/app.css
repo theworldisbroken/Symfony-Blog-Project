@@ -1,7 +1,38 @@
-body {
-    background-color: skyblue;
+#navbar-signup{
+    position: fixed;
+    top: 5px;
+    right: 0;
 }
 
-h1{
-    text-align: center;
+#navbar-Profile{
+    position: fixed;
+    top: 5px;
+    right: 5rem;
+}
+
+.create-article-form{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: auto;
+}
+
+.welcome-msg-proflie{
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.create-btn{
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.create-article-title{
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center; 
 }

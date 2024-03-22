@@ -1,23 +1,15 @@
 <?php
+
 namespace App\Controller;
 
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-
-use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Attribute\Route;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
-
-
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Blog;
 
 class BlogController extends AbstractController
 {
@@ -28,78 +20,57 @@ class BlogController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/')]
-    public function homePAge(Request $request): Response
-    {
-        return $this->render('base.html.twig');
-    }
-
-    #[Route('/signup', name: 'user-signup', methods: ['GET'])]
-    public function showPage(Request $request): Response
-    {
-        return $this->render('User/signup.html.twig');
-    }
-
-    #[Route('/signup', name: 'signup', methods: ['POST'])]
-    public function saveData(Request $request, UserPasswordHasherInterface $passwordHasher): Response
-    {
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
-
-        $user = new User();
-
-        $user->setUsername($username);
-
-        $hashedPassword = $passwordHasher->hashPassword($user, $password);
-
-        $user->setPassword($hashedPassword);
-
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-
-        // $users = $this->entityManager->getRepository(User::class)->findAll();
-
-        return $this->redirectToRoute('login_page');
-    }
-
-
-    #[Route('/login', name: 'login_page', methods: ['GET'])]
-    public function loginPage(Request $request): Response
-    {
-        return $this->render('User/login.html.twig');
-    }
-
-    #[Route('/login', name: 'login', methods: ['POST'])]
-    public function login(Request $request, UserPasswordHasherInterface $passwordHasher, SessionInterface $session): Response
-    {
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
-
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
-
-        if (!$user) {
-            throw new BadCredentialsException('Bad Credentials');
-        }
-
-        if (!$passwordHasher->isPasswordValid($user, $password)) {
-            throw new BadCredentialsException('Bad Credentials');
-        } else {
-            $session->set('username', $username);
-            return $this->redirectToRoute('personalpage');
-        }
-    }
-
-
-    #[Route('/personalpage', name: 'personalpage', methods: ['GET'])]
-    public function personalpage(Request $request, SessionInterface $session): Response
+    #[Route('/', name: 'home')]
+    public function homePage(Request $request, SessionInterface $session): Response
     {
         $username = $session->get('username');
+        $articles = $this->entityManager->getRepository(Blog::class)->findAll();
+
+        return $this->render('base.html.twig', [
+            'articles' => $articles,
+            'username' => $username
+        ]);
+    }
+
+    #[Route('/create', name: 'create_GET', methods: ['GET'])]
+    public function getCraeteArticle(SessionInterface $session): Response
+    {
+        $username = $session->get('username');
+
         if (!$username) {
             return $this->redirectToRoute('login');
         }
-        return $this->render(
-            'Logged_in/personalpage.html.twig',
-            ['username' => $username]
-        );
+
+        return $this->render('blog/createArticle.html.twig', [
+            'username' => $username,
+        ]);
+    }
+
+    #[Route('/create', name: 'create_article', methods: ['POST'])]
+    public function craeteArticle(Request $request, SessionInterface $session): Response
+    {
+        $username = $session->get('username');
+        $title = $request->request->get('title');
+        $body = $request->request->get('body');
+
+        if (!$username) {
+            return $this->redirectToRoute('login');
+        }
+
+        if(!$title || !$body) {
+            return $this->render('blog/createArticle.html.twig', [
+                'error' => true
+            ]);
+        }
+
+        $article = new Blog();
+        $article->setTitle($title);
+        $article->setBody($body);
+        $article->setUsername($username);
+
+        $this->entityManager->persist($article);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('home');
     }
 }
