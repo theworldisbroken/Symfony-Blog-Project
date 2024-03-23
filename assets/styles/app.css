@@ -1,3 +1,12 @@
+.body-div{
+    display: flex;
+    flex-direction: column;
+}
+
+a{
+    text-decoration: none;
+}
+
 #navbar-signup{
     position: fixed;
     top: 5px;
@@ -17,22 +26,42 @@
     margin: auto;
 }
 
-.welcome-msg-proflie{
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.create-btn{
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.welcome-profile-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
 }
 
 .create-article-title{
     display: flex;
     justify-content: center; /* Horizontally center */
     align-items: center; 
+}
+
+.card{
+    width: 40%;
+    display: flex;
+    margin: auto;
+}
+
+.card-header{
+    display: flex;
+    flex-direction: row;
+    text-decoration: underline;
+}
+
+#btn-delete{
+  margin-left: auto;
+}
+
+.card-link:hover{
+    filter: brightness(94%);
+}
+
+.my-posts-label{
+    margin: auto;
+    font-size: 35px;
 }

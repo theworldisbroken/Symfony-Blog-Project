@@ -57,7 +57,7 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
-        if(!$title || !$body) {
+        if (!$title || !$body) {
             return $this->render('blog/createArticle.html.twig', [
                 'error' => true
             ]);
@@ -72,5 +72,56 @@ class BlogController extends AbstractController
         $this->entityManager->flush();
 
         return $this->redirectToRoute('home');
+    }
+
+    #[Route('/article/{id}', name: 'article', methods: ['GET'])]
+    public function getArticle(Request $request, SessionInterface $session): Response
+    {
+        $id = $request->get('id');
+        $username = $session->get('username');
+        if (!$id) {
+            return $this->redirectToRoute('home');
+        }
+
+        $article = $this->entityManager->getRepository(Blog::class)->find($id);
+
+        return $this->render('blog/article.html.twig', [
+            'article' => $article,
+            'username' => $username
+        ]);
+    }
+
+    #[Route('/article/delete/{id}', name: 'article_delete', methods: ['GET'])]
+    public function deleteArticle(Request $request, SessionInterface $session): Response
+    {
+        $id = $request->get('id');
+        $username = $session->get('username');
+        if (!$id) {
+            return $this->redirectToRoute('home');
+        }
+
+        $article = $this->entityManager->getRepository(Blog::class)->find($id);
+        if ($article->getUsername() === $username) {
+            $this->entityManager->remove($article);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('home');
+        }
+        return $this->redirectToRoute('home');
+    }
+
+    #[Route('/personalpage', name: 'personalpage', methods: ['GET'])]
+    public function personalpage(Request $request, SessionInterface $session): Response
+    {
+        $username = $session->get('username');
+        if (!$username) {
+            return $this->redirectToRoute('login');
+        }
+        $articles = $this->entityManager->getRepository(Blog::class)->findBy(["username" => $username]);
+        return $this->render(
+            'Logged_in/personalpage.html.twig',
+            ['username' => $username,
+            'articles'=> $articles
+            ]
+        );
     }
 }

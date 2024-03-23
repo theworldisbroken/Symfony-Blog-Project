@@ -79,20 +79,6 @@ class UserController extends AbstractController
         }
     }
 
-
-    #[Route('/personalpage', name: 'personalpage', methods: ['GET'])]
-    public function personalpage(Request $request, SessionInterface $session): Response
-    {
-        $username = $session->get('username');
-        if (!$username) {
-            return $this->redirectToRoute('login');
-        }
-        return $this->render(
-            'Logged_in/personalpage.html.twig',
-            ['username' => $username]
-        );
-    }
-
     #[Route('/logout', name: 'logout', methods: ['GET'])]
     public function logout(Request $request, SessionInterface $session): Response
     {
