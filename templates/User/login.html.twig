@@ -7,8 +7,8 @@
 {% include 'navbar.html.twig' %}
 <h1>Login</h1>
 <form action="{{ path('login') }}" method="post">
-    <input type="text" name="username" placeholder="Username">
-    <input type="text" name="password" placeholder="Password">
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="text" name="password" placeholder="Password" required>
     <button type="submit">Sign in</button>
 </form>
 {% if error is defined and error == true %}

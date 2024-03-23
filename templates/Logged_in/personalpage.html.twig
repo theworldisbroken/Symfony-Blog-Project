@@ -24,6 +24,7 @@
 				Create Article
 			</a>
 		</div>
+				<div class="articles">
 		{% if articles is defined %}
 			<label class="my-posts-label">My Posts</label>
 			{% for article in articles %}
@@ -41,6 +42,7 @@
 				</a>
 			{% endfor %}
 		{% endif %}
+		</div>
 	{% endblock %}
     </div>
 </body>

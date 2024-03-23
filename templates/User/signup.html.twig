@@ -6,8 +6,8 @@
 {% include 'navbar.html.twig' with { active: 'signin' } %}
 <h1>Register</h1>
 <form action="{{ path('signup') }}" method="post">
-    <input type="text" name="username" placeholder="Username">
-    <input type="text" name="password" placeholder="Password">
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" minlength="8" required>
     <button type="submit">Sign up</button>
 </form>
 {% endblock %}

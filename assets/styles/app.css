@@ -1,32 +1,32 @@
-.body-div{
+.body-div {
     display: flex;
     flex-direction: column;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-#navbar-signup{
+#navbar-signup {
     position: fixed;
     top: 5px;
     right: 0;
 }
 
-#navbar-Profile{
+#navbar-Profile {
     position: fixed;
     top: 5px;
     right: 5rem;
 }
 
-.create-article-form{
+.create-article-form {
     display: flex;
     flex-direction: column;
     width: 40%;
     margin: auto;
 }
 
-.welcome-profile-div{
+.welcome-profile-div {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -35,33 +35,47 @@ a{
     padding: 2rem;
 }
 
-.create-article-title{
+.create-article-title {
     display: flex;
-    justify-content: center; /* Horizontally center */
-    align-items: center; 
+    justify-content: center;
+    /* Horizontally center */
+    align-items: center;
 }
 
-.card{
-    width: 40%;
+.card {
     display: flex;
     margin: auto;
 }
 
-.card-header{
+.card-header {
     display: flex;
     flex-direction: row;
     text-decoration: underline;
 }
 
-#btn-delete{
-  margin-left: auto;
+#btn-delete {
+    margin-left: auto;
 }
 
-.card-link:hover{
+.articles{
+    width: 40%;
+    margin: auto;
+    margin-top: 2rem;
+}
+
+.card-link:hover {
     filter: brightness(94%);
 }
 
-.my-posts-label{
+.my-posts-label {
     margin: auto;
+    text-align: center;
     font-size: 35px;
+}
+
+.back-btn {
+    margin-left: 30%;
+    margin-top: 2rem;
+    position: relative;
+    top: 1.3rem;
 }
