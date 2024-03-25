@@ -91,6 +91,27 @@ class BlogController extends AbstractController
         ]);
     }
 
+    #[Route('/article/edit/{id}', name: 'edit_article', methods: ['POST'])]
+    public function editArticle(Request $request, SessionInterface $session): Response
+    {
+        $username = $session->get('username');
+        $id = $request->get('id');
+        $title = $request->request->get('title');
+        $body = $request->request->get('body');
+
+        if (!$username) {
+            return $this->redirectToRoute('login');
+        }
+
+        $article = $this->entityManager->getRepository(Blog::class)->find($id);
+        $article->setTitle($title);
+        $article->setBody($body);
+
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('article', ['id' => $id]);
+    }
+
     #[Route('/article/delete/{id}', name: 'article_delete', methods: ['GET'])]
     public function deleteArticle(Request $request, SessionInterface $session): Response
     {
@@ -119,8 +140,9 @@ class BlogController extends AbstractController
         $articles = $this->entityManager->getRepository(Blog::class)->findBy(["username" => $username]);
         return $this->render(
             'Logged_in/personalpage.html.twig',
-            ['username' => $username,
-            'articles'=> $articles
+            [
+                'username' => $username,
+                'articles' => $articles
             ]
         );
     }
