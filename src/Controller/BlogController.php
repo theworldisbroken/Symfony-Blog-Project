@@ -11,6 +11,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Blog;
 
+use App\Form\CreatePostType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
+
 class BlogController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -33,46 +37,38 @@ class BlogController extends AbstractController
     }
 
     #[Route('/create', name: 'create_GET', methods: ['GET'])]
-    public function getCraeteArticle(SessionInterface $session): Response
+    public function getCraeteArticle(Request $request, SessionInterface $session): Response
     {
         $username = $session->get('username');
 
         if (!$username) {
             return $this->redirectToRoute('login');
+        }
+
+        $article = new Blog();
+        $form = $this->createForm(CreatePostType::class, $article, ['attr' => ['class' => 'create-article-form']]);
+        $article->setUsername($username);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+          
+            $article->setTitle($data->getTitle());
+            $article->setBody($data->getBody());
+
+            $this->entityManager->persist($article);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('blog/createArticle.html.twig', [
             'username' => $username,
+            'form' => $form->createView()
         ]);
     }
 
-    #[Route('/create', name: 'create_article', methods: ['POST'])]
-    public function craeteArticle(Request $request, SessionInterface $session): Response
-    {
-        $username = $session->get('username');
-        $title = $request->request->get('title');
-        $body = $request->request->get('body');
-
-        if (!$username) {
-            return $this->redirectToRoute('login');
-        }
-
-        if (!$title || !$body) {
-            return $this->render('blog/createArticle.html.twig', [
-                'error' => true
-            ]);
-        }
-
-        $article = new Blog();
-        $article->setTitle($title);
-        $article->setBody($body);
-        $article->setUsername($username);
-
-        $this->entityManager->persist($article);
-        $this->entityManager->flush();
-
-        return $this->redirectToRoute('home');
-    }
 
     #[Route('/article/{id}', name: 'article', methods: ['GET'])]
     public function getArticle(Request $request, SessionInterface $session): Response
