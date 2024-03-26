@@ -32,12 +32,16 @@ class CreatePostType extends AbstractType
                     'id' => 'exampleFormControlTextarea1',
                 ]
             ])
+            ->add('picture', FileType::class, [
+                'attr' => [
+                    'enctype' => 'multipart/form-data',
+                ]
+            ])
             ->add('Create', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary me-md-2 float-end',
                 ]
             ])
-            ->setMethod('GET');
         ;
     }
 

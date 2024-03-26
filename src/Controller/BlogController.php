@@ -36,7 +36,7 @@ class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/create', name: 'create_GET', methods: ['GET'])]
+    #[Route('/create', name: 'create_GET')]
     public function getCraeteArticle(Request $request, SessionInterface $session): Response
     {
         $username = $session->get('username');
@@ -53,7 +53,21 @@ class BlogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-          
+            $picture = $form->get('picture')->getData();
+
+            if ($picture) {
+                $newFilename = uniqid() . '.' . $picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('artilces_pics'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+
+                $article->setPicture($newFilename);
+            }
             $article->setTitle($data->getTitle());
             $article->setBody($data->getBody());
 

@@ -79,3 +79,14 @@ a {
     position: relative;
     top: 1.3rem;
 }
+
+.article_pic{
+    max-width: 20rem;
+    max-height: 20rem;
+    margin: auto;
+}
+
+.card-body{
+    display: flex;
+    flex-direction: column;
+}
