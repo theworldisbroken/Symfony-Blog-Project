@@ -1,13 +1,23 @@
- <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Register{% endblock %}</title>
-    </head>
+<head>
+	<meta charset="UTF-8">
+	<title>
+		{% block title %}Register
+		{% endblock %}
+	</title>
+</head>
 {% block body %}
-{% include 'navbar.html.twig' with { active: 'signin' } %}
-<h1>Register</h1>
-<form action="{{ path('signup') }}" method="post">
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="Password" minlength="8" required>
-    <button type="submit">Sign up</button>
-</form>
+	{% include 'navbar.html.twig' with { active: 'signin' } %}
+	<div class="container">
+		{{ form_start(form, { 'attr': {'class': 'form'}}) }}
+		<h1>Register</h1>
+		<div class="form-floating">
+				{{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'Username'}, 'id': 'floatingInput'})}}
+				<label for="floatingInput">Username</label>
+			</div>
+			<div class="form-floating">
+				{{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Password', 'minlength': 8}, 'id': 'floatingPassword'})}}
+				<label for="floatingPassword">Password</label>
+			</div>
+			{{form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}})}}
+	</div>
 {% endblock %}

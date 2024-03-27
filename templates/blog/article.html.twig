@@ -24,43 +24,40 @@
 					<h4>{{article.title}}
 					</h4>
 					<div class="btn-delete">
-					{% if username %}
-						<a id="toggleFormButton" class="btn btn-primary">Edit</a>
-						<a href="{{ path('article_delete', {id: article.id})}}" class="btn btn-primary" >Delete</a>
-					{% endif %}
+						{% if username %}
+							<a id="toggleFormButton" class="btn btn-primary">Edit</a>
+							<a href="{{ path('article_delete', {id: article.id})}}" class="btn btn-primary">Delete</a>
+						{% endif %}
 					</div>
 				</div>
 				<div class="card-body">
-				<form id="myForm" class="create-article-form" action="{{ path('edit_article', {id: article.id})}}" method="POST">
-					<label for="title">Title</label>
-  					<textarea class="form-control" name="title" id="exampleFormControlTextarea1" rows="1">{{article.title}}</textarea>
-					<label for="body">Article</label>
-  					<textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="3">{{article.body}}</textarea>
-					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-						<button type="submit" class="btn btn-primary me-md-2">Update</button>
-					</div>
-				</form>	
+					<form id="myForm" class="create-article-form" action="{{ path('edit_article', {id: article.id})}}" method="POST">
+						<label for="title">Title</label>
+						<textarea class="form-control" name="title" id="exampleFormControlTextarea1" rows="1">{{article.title}}</textarea>
+						<label for="body">Article</label>
+						<textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="3">{{article.body}}</textarea>
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+							<button type="submit" class="btn btn-primary me-md-2">Update</button>
+						</div>
+					</form>
 					<p class="card-text">
 						{{article.body}}</p>
-					<img class="article_pic" src="{{ '/uploads/articles_pics/' ~ article.picture}}" alt="artilce pic" />
-				</div>
+				{% if article.picture is not null %}
+					<img class="article_pic" src="{{ '/uploads/articles_pics/' ~ article.picture}}" alt="artilce pic"/>
+				{% endif %}
 			</div>
 		</div>
-	{% endblock %}
-
-	  <script>
-	  document.getElementById('myForm').style.display = 'none'
-        document.getElementById('toggleFormButton').addEventListener('click', function() {
-            const form = document.getElementById('myForm');
-			const card = document.querySelector(".card-text");
-            if (form.style.display === 'none') {
-                form.style.display = 'block';
-                card.style.display = 'none';
-            } else {
-                form.style.display = 'none';
-				card.style.display = 'block';
-            }
-        });
-    </script>
-
-</body>
+	</body>
+</div>{% endblock %}<script>
+document.getElementById('myForm').style.display = 'none'
+document.getElementById('toggleFormButton').addEventListener('click', function () {
+const form = document.getElementById('myForm');
+const card = document.querySelector(".card-text");
+if (form.style.display === 'none') {
+form.style.display = 'block';
+card.style.display = 'none';
+} else {
+form.style.display = 'none';
+card.style.display = 'block';
+}
+});</script></body>

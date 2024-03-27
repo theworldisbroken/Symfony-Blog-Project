@@ -33,8 +33,9 @@ class CreatePostType extends AbstractType
                 ]
             ])
             ->add('picture', FileType::class, [
+                'required' => false,
                 'attr' => [
-                    'enctype' => 'multipart/form-data',
+                    'enctype' => 'multipart/form-data'
                 ]
             ])
             ->add('Create', SubmitType::class, [

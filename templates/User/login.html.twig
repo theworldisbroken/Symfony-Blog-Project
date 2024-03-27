@@ -1,18 +1,32 @@
 <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Login{% endblock %}</title>
+	<meta charset="UTF-8">
+	<title>
+		{% block title %}Login
+		{% endblock %}
+	</title>
 </head>
 {% block body %}
-<body>
-{% include 'navbar.html.twig' %}
-<h1>Login</h1>
-<form action="{{ path('login') }}" method="post">
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="text" name="password" placeholder="Password" required>
-    <button type="submit">Sign in</button>
-</form>
-{% if error is defined and error == true %}
-    <p> Wrong Credentials </p>
-{% endif %}
-{% endblock %}
+	<body>
+		{% include 'navbar.html.twig' %}
+
+		<div class="container">
+			{{ form_start(form, { 'attr': {'class': 'form'}}) }}
+			<h1>Login</h1>
+			<div class="form-floating">
+				{{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'Username'}, 'id': 'floatingInput'})}}
+				<label for="floatingInput">Username</label>
+			</div>
+			<div class="form-floating">
+				{{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Password'}, 'id': 'floatingPassword'})}}
+				<label for="floatingPassword">Password</label>
+			</div>
+			{{form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}})}}
+			{{ form_end(form) }}
+			{% if error is defined and error == true %}
+				<p>
+					Wrong Credentials
+				</p>
+			{% endif %}
+		</div>
+	{% endblock %}
 </body>

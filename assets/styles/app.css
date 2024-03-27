@@ -57,7 +57,7 @@ a {
     margin-left: auto;
 }
 
-.articles{
+.articles {
     width: 40%;
     margin: auto;
     margin-top: 2rem;
@@ -80,13 +80,38 @@ a {
     top: 1.3rem;
 }
 
-.article_pic{
+.article_pic {
     max-width: 20rem;
     max-height: 20rem;
     margin: auto;
 }
 
-.card-body{
+.card-body {
     display: flex;
     flex-direction: column;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30rem;
+    height: 25rem;
+    border: 1px solid black;
+    border-radius: 20px;
+    gap: 1rem;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.form-control {
+    width: 20rem;
+    max-width: 20rem;
 }

@@ -16,12 +16,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
          {% if active is defined and active == "signin" %}
-         <a class="navbar-brand" id="navbar-signup" href={{ path("login_page") }}>Login</a>
+         <a class="navbar-brand" id="navbar-signup" href={{ path("login") }}>Login</a>
          {% elseif active is defined and active == "signedin" %}
          <a class="navbar-brand" id="navbar-Profile" href={{ path("personalpage") }}>Profile</a>
          <a class="navbar-brand" id="navbar-signup" href={{ path("logout") }}>Logout</a>
          {% else %}
-         <a class="navbar-brand" id="navbar-signup" href={{ path("user-signup") }}>Signup</a>
+         <a class="navbar-brand" id="navbar-signup" href={{ path("signup") }}>Signup</a>
          {% endif %}
     </div>
   </div>

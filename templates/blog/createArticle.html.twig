@@ -1,19 +1,21 @@
 <head>
-        <meta charset="UTF-8">
-        <title>Create Article</title>
+	<meta charset="UTF-8">
+	<title>Create Article</title>
 </head>
 {% block body %}
-<body>
-{% include 'navbar.html.twig' %}
-<div class="create-article-title">
-<h1>Create a post {{username}}</h1>
-</div>
+	<body>
+		{% include 'navbar.html.twig' %}
+		<div class="create-article-title"></div>
+		<div class="container">
+			{{ form_start(form, {'attr': {'class': 'form'}}) }}
+			<h1>Create a post {{username}}</h1>
+			{{ form_end(form) }}
 
-{{ form_start(form) }}
-{{ form_end(form) }}
-
-{% if error is defined and error == true %}
-    <p> Missing field </p>
-{% endif %}
-{% endblock %}
+			{% if error is defined and error == true %}
+				<p>
+					Missing field
+				</p>
+			{% endif %}
+		</div>
+	{% endblock %}
 </body>

@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
+use App\Form\UserFormType;
+
 class UserController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -26,57 +28,63 @@ class UserController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/signup', name: 'user-signup', methods: ['GET'])]
-    public function showPage(Request $request): Response
-    {
-        return $this->render('User/signup.html.twig');
-    }
-
-    #[Route('/signup', name: 'signup', methods: ['POST'])]
+    #[Route('/signup', name: 'signup')]
     public function saveData(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
-
         $user = new User();
+        $form = $this->createForm(UserFormType::class, $user);
 
-        $user->setUsername($username);
+        $form->handleRequest($request);
 
-        $hashedPassword = $passwordHasher->hashPassword($user, $password);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $username = $data->getUsername();
+            $password = $data->getPassword();
+            $hashedPassword = $passwordHasher->hashPassword($user, $password);
+            $user->setPassword($hashedPassword);
+            $user->setUsername($username);
 
-        $user->setPassword($hashedPassword);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+            return $this->redirectToRoute('login_page');
+        }
 
-        // $users = $this->entityManager->getRepository(User::class)->findAll();
-
-        return $this->redirectToRoute('login_page');
+        return $this->render(
+            'User/signup.html.twig',
+            [
+                'form' => $form,
+            ]
+        );
     }
 
-
-    #[Route('/login', name: 'login_page', methods: ['GET'])]
-    public function loginPage(Request $request): Response
-    {
-        return $this->render('User/login.html.twig');
-    }
-
-    #[Route('/login', name: 'login', methods: ['POST'])]
+    #[Route('/login', name: 'login')]
     public function login(Request $request, UserPasswordHasherInterface $passwordHasher, SessionInterface $session): Response
     {
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
+        $form = $this->createForm(UserFormType::class);
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+        $form->handleRequest($request);
 
-        if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
-            return $this->render('User/login.html.twig', [
-                'error' => true
-            ]);
-        } else {
-            $session->set('username', $username);
-            return $this->redirectToRoute('personalpage');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $username = $data->getUsername();
+            $password = $data->getPassword();
+            $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+            if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
+                return $this->render('User/login.html.twig', [
+                    'error' => true
+                ]);
+            } else {
+                $session->set('username', $username);
+                return $this->redirectToRoute('personalpage');
+            }
         }
+        return $this->render(
+            'User/login.html.twig',
+            [
+                'form' => $form,
+            ]
+        );
     }
 
     #[Route('/logout', name: 'logout', methods: ['GET'])]
