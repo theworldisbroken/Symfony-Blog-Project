@@ -9,6 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\IsFalse;
+use Symfony\Component\Validator\Constraints\IsNull;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
 class UserFormType extends AbstractType
 {
@@ -16,15 +19,15 @@ class UserFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label'=> false,
+                'label' => false,
                 'attr' => [
-                    'label'=> false,
+                    'label' => false,
                     'required' => 'true'
                 ],
             ])
             ->add('password', PasswordType::class, [
                 'attr' => [
-                    'label'=> false,
+                    'label' => false,
                     'required' => 'true'
                 ],
             ])

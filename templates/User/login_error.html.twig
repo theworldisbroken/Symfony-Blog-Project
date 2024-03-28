@@ -21,10 +21,10 @@
 				<label for="floatingPassword">Password</label>
 			</div>
 			{{form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}})}}
-			{{ form_end(form) }}
 			{% if error is defined and error == true %}
-				<h1>Wrong Credentials</h1>
+				<p>Wrong Credentials</p>
 			{% endif %}
+			{{ form_end(form) }}
 		</div>
 	{% endblock %}
 </body>

@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use App\Form\UserFormType;
 
+
 class UserController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -62,27 +63,55 @@ class UserController extends AbstractController
     public function login(Request $request, UserPasswordHasherInterface $passwordHasher, SessionInterface $session): Response
     {
         $form = $this->createForm(UserFormType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $username = $data->getUsername();
             $password = $data->getPassword();
+            $username = $data->getUsername();
+
             $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
-            if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
-                return $this->render('User/login.html.twig', [
-                    'error' => true
-                ]);
-            } else {
+
+            if ($user && $passwordHasher->isPasswordValid($user, $password)) {
                 $session->set('username', $username);
                 return $this->redirectToRoute('personalpage');
+            } else if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
+                return $this->redirectToRoute('login_error');
             }
         }
         return $this->render(
             'User/login.html.twig',
             [
+                'form' => $form
+            ]
+        );
+    }
+
+    #[Route('/login/error', name: 'login_error')]
+    public function login_error(Request $request, UserPasswordHasherInterface $passwordHasher, SessionInterface $session): Response
+    {
+        $form = $this->createForm(UserFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $password = $data->getPassword();
+            $username = $data->getUsername();
+
+            $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+
+            if ($user && $passwordHasher->isPasswordValid($user, $password)) {
+                $session->set('username', $username);
+                return $this->redirectToRoute('personalpage');
+            } else if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
+                return $this->redirectToRoute('login_error');
+            }
+        }
+        return $this->render(
+            'User/login_error.html.twig',
+            [
                 'form' => $form,
+                'error' => true
             ]
         );
     }

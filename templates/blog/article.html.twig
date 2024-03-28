@@ -42,13 +42,15 @@
 					</form>
 					<p class="card-text">
 						{{article.body}}</p>
-				{% if article.picture is not null %}
-					<img class="article_pic" src="{{ '/uploads/articles_pics/' ~ article.picture}}" alt="artilce pic"/>
-				{% endif %}
+					{% if article.picture is not null %}
+						<img class="article_pic" src="{{ '/uploads/articles_pics/' ~ article.picture}}" alt="artilce pic"/>
+					{% endif %}
+				</div>
 			</div>
-		</div>
+		</body>
 	</body>
-</div>{% endblock %}<script>
+</div>{% endblock %}
+<script>
 document.getElementById('myForm').style.display = 'none'
 document.getElementById('toggleFormButton').addEventListener('click', function () {
 const form = document.getElementById('myForm');
@@ -60,4 +62,5 @@ card.style.display = 'none';
 form.style.display = 'none';
 card.style.display = 'block';
 }
-});</script></body>
+});</script>
+</body>
