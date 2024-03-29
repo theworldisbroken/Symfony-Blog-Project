@@ -42,7 +42,7 @@ class BlogController extends AbstractController
         $username = $session->get('username');
 
         if (!$username) {
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('app_login');
         }
 
         $article = new Blog();
@@ -110,7 +110,7 @@ class BlogController extends AbstractController
         $body = $request->request->get('body');
 
         if (!$username) {
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('app_login');
         }
 
         $article = $this->entityManager->getRepository(Blog::class)->find($id);
@@ -140,13 +140,10 @@ class BlogController extends AbstractController
         return $this->redirectToRoute('home');
     }
 
-    #[Route('/personalpage', name: 'personalpage', methods: ['GET'])]
+    #[Route('/personalpage', name: 'personalpage')]
     public function personalpage(Request $request, SessionInterface $session): Response
     {
-        $username = $session->get('username');
-        if (!$username) {
-            return $this->redirectToRoute('login');
-        }
+        $username = $this->getUser()->getUserIdentifier();
         $articles = $this->entityManager->getRepository(Blog::class)->findBy(["username" => $username]);
         return $this->render(
             'Logged_in/personalpage.html.twig',

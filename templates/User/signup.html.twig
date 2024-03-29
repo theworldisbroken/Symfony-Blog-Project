@@ -9,6 +9,7 @@
 	{% include 'navbar.html.twig' with { active: 'signin' } %}
 	<div class="container">
 		{{ form_start(form, { 'attr': {'class': 'form'}}) }}
+		{{ form_row(form._token) }}
 		<h1>Register</h1>
 		<div class="form-floating">
 				{{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'Username'}, 'id': 'floatingInput'})}}
