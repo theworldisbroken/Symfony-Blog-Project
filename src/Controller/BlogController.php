@@ -25,9 +25,9 @@ class BlogController extends AbstractController
     }
 
     #[Route('/', name: 'home')]
-    public function homePage(Request $request, SessionInterface $session): Response
+    public function homePage(Request $request): Response
     {
-        $username = $session->get('username');
+        $username = $this->getUser()->getUsername();
         $articles = $this->entityManager->getRepository(Blog::class)->findAll();
 
         return $this->render('base.html.twig', [
@@ -39,7 +39,7 @@ class BlogController extends AbstractController
     #[Route('/create', name: 'create_GET')]
     public function getCraeteArticle(Request $request, SessionInterface $session): Response
     {
-        $username = $session->get('username');
+        $username = $this->getUser()->getUsername();
 
         if (!$username) {
             return $this->redirectToRoute('app_login');
@@ -85,10 +85,10 @@ class BlogController extends AbstractController
 
 
     #[Route('/article/{id}', name: 'article', methods: ['GET'])]
-    public function getArticle(Request $request, SessionInterface $session): Response
+    public function getArticle(Request $request): Response
     {
         $id = $request->get('id');
-        $username = $session->get('username');
+        $username = $this->getUser()->getUsername();
         if (!$id) {
             return $this->redirectToRoute('home');
         }
@@ -102,9 +102,9 @@ class BlogController extends AbstractController
     }
 
     #[Route('/article/edit/{id}', name: 'edit_article', methods: ['POST'])]
-    public function editArticle(Request $request, SessionInterface $session): Response
+    public function editArticle(Request $request): Response
     {
-        $username = $session->get('username');
+        $username = $this->getUser()->getUsername();
         $id = $request->get('id');
         $title = $request->request->get('title');
         $body = $request->request->get('body');
@@ -123,10 +123,10 @@ class BlogController extends AbstractController
     }
 
     #[Route('/article/delete/{id}', name: 'article_delete', methods: ['GET'])]
-    public function deleteArticle(Request $request, SessionInterface $session): Response
+    public function deleteArticle(Request $request): Response
     {
         $id = $request->get('id');
-        $username = $session->get('username');
+        $username = $this->getUser()->getUsername();
         if (!$id) {
             return $this->redirectToRoute('home');
         }
@@ -141,7 +141,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/personalpage', name: 'personalpage')]
-    public function personalpage(Request $request, SessionInterface $session): Response
+    public function personalpage(Request $request): Response
     {
         $username = $this->getUser()->getUserIdentifier();
         $articles = $this->entityManager->getRepository(Blog::class)->findBy(["username" => $username]);

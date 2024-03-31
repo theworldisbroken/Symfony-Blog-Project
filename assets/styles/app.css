@@ -1,6 +1,14 @@
+body{
+    /* background-color: #2b3035; */
+    background-image: url('./files/background.png');
+    background-repeat: repeat-x;
+    background-size: 100%;
+}
+
 .body-div {
     display: flex;
     flex-direction: column;
+    color: #fff;
 }
 
 a {
@@ -45,6 +53,7 @@ a {
 .card {
     display: flex;
     margin: auto;
+    margin-top: 1.5rem;
 }
 
 .card-header {
@@ -61,6 +70,7 @@ a {
     width: 40%;
     margin: auto;
     margin-top: 2rem;
+    color: #fff;
 }
 
 .card-link:hover {
@@ -99,6 +109,7 @@ a {
 }
 
 .form {
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;

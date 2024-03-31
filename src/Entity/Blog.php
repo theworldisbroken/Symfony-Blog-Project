@@ -16,13 +16,13 @@ class Blog
     #[ORM\Column(length: 255)]
     private ?string $username = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"text")]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type:"text", nullable: true)]
     private ?string $body = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type:"text", nullable: true)]
     private ?string $picture = null;
 
     public function getId(): ?int
