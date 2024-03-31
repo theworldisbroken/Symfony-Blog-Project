@@ -27,7 +27,12 @@ class BlogController extends AbstractController
     #[Route('/', name: 'home')]
     public function homePage(Request $request): Response
     {
-        $username = $this->getUser()->getUsername();
+        $username = '';
+        $sessionUsername = $this->getUser();
+        if ($sessionUsername) {
+            $username = $this->getUser()->getUsername();
+        }
+        
         $articles = $this->entityManager->getRepository(Blog::class)->findAll();
 
         return $this->render('base.html.twig', [

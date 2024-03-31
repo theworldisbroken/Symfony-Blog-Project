@@ -20,15 +20,19 @@
 		<div class="articles">
 
 			<div class="card">
-				<div class="card-header">
-					<h4>{{article.title}}
+				<div class="article-header">
+					<h4 class="article-username">@{{article.username}}
 					</h4>
-					<div class="btn-delete">
+					<div class="article-btns ">
 						{% if username %}
 							<a id="toggleFormButton" class="btn btn-primary">Edit</a>
 							<a href="{{ path('article_delete', {id: article.id})}}" class="btn btn-primary">Delete</a>
 						{% endif %}
 					</div>
+				</div>
+				<div class="card-header">
+					<h4>{{article.title}}
+					</h4>
 				</div>
 				<div class="card-body">
 					<form id="myForm" class="create-article-form" action="{{ path('edit_article', {id: article.id})}}" method="POST">
@@ -49,8 +53,7 @@
 			</div>
 		</body>
 	</body>
-</div>{% endblock %}
-<script>
+</div>{% endblock %}<script>
 document.getElementById('myForm').style.display = 'none'
 document.getElementById('toggleFormButton').addEventListener('click', function () {
 const form = document.getElementById('myForm');
@@ -62,5 +65,4 @@ card.style.display = 'none';
 form.style.display = 'none';
 card.style.display = 'block';
 }
-});</script>
-</body>
+});</script></body>

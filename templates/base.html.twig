@@ -19,6 +19,10 @@
 				{% for article in articles %}
 					<a href="{{ path('article', {id: article.id})}}" id="card-link" class="card-link">
 						<div class="card">
+							<div class="article-header">
+								<h4 class="article-username">@{{article.username}}
+								</h4>
+							</div>
 							<div class="card-header">
 								<h4>{{article.title}}
 								</h4>
