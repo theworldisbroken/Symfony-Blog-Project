@@ -4,11 +4,16 @@
 </head>
 {% block body %}
 	<body>
-		{% include 'navbar.html.twig' %}
+		{% if username %}
+			{% include 'navbar.html.twig' with {active: 'signedin'} %}
+		{% else %}
+			{% include 'navbar.html.twig' %}
+		{% endif %}
 		<div class="create-article-title"></div>
 		<div class="container">
 			{{ form_start(form, {'attr': {'class': 'form'}}) }}
-			<h1>Create a post {{username}}</h1>
+			<h1>Create a post
+				{{username}}</h1>
 			{{ form_end(form) }}
 
 			{% if error is defined and error == true %}
