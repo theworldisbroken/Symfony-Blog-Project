@@ -44,6 +44,9 @@ class BlogController extends AbstractController
     #[Route('/create', name: 'create_GET')]
     public function getCraeteArticle(Request $request): Response
     {
+        if (!$this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_login');
+        }
         $username = $this->getUser()->getUsername();
 
         $article = new Blog();
@@ -112,16 +115,21 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $id = $request->get('id');
+        $username = $this->getUser()->getUsername();
         $title = $request->request->get('title');
         $body = $request->request->get('body');
 
         $article = $this->entityManager->getRepository(Blog::class)->find($id);
-        $article->setTitle($title);
-        $article->setBody($body);
+        if ($article->getUsername() === $username) {
+            $article->setTitle($title);
+            $article->setBody($body);
 
-        $this->entityManager->flush();
+            $this->entityManager->flush();
 
-        return $this->redirectToRoute('article', ['id' => $id]);
+
+            return $this->redirectToRoute('article', ['id' => $id]);
+        }
+        return $this->redirectToRoute('home');
     }
 
     #[Route('/article/delete/{id}', name: 'article_delete', methods: ['GET'])]

@@ -24,7 +24,7 @@
 					<h4 class="article-username">@{{article.username}}
 					</h4>
 					<div class="article-btns ">
-						{% if username %}
+						{% if username and username == article.username %}
 							<a id="toggleFormButton" class="btn btn-primary">Edit</a>
 							<a href="{{ path('article_delete', {id: article.id})}}" class="btn btn-primary">Delete</a>
 						{% endif %}
